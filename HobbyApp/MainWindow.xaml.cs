@@ -13,16 +13,13 @@ using System.Windows.Shapes;
 namespace HobbyApp
 {
     /// <summary>
-    /// Initializes the main window, sets up the ViewModel, and loads data asynchronously.
+    /// Initializes the main window
     /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            var viewModel = new HobbiesViewModel();
-            DataContext = viewModel;
-            _ = viewModel.LoadAsync();
         }
     }
 }

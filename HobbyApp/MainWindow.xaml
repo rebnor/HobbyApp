@@ -3,12 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HobbyApp"
+        xmlns:local="clr-namespace:HobbyApp" 
+        xmlns:vm="clr-namespace:HobbyApp.VM"
         mc:Ignorable="d"
         Title="Hobbies" 
         Width="800" MinWidth="520"
-        Height="600" MinHeight="480"
+        Height="600" MinHeight="500"
         FontFamily="Lucida Handwriting">
+    <!-- Data Context from HobbyApp.VM.HobbiesViewModel -->
+    <Window.DataContext>
+        <vm:HobbiesViewModel/>
+    </Window.DataContext>
     <!-- Main layout grid with two columns and two rows -->
     <Grid Background="#FAFBF8">
         <Grid.ColumnDefinitions>
@@ -41,7 +46,7 @@
         <StackPanel Grid.Column="1">
             <TextBlock Text="Add a new hobby" FontSize="20" TextAlignment="Center"/>
             <Label Content="Name:" />
-            <TextBox Text="{Binding NameInput}"/>
+            <TextBox Text="{Binding NameInput, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Description:" />
             <TextBox Text="{Binding DescriptionInput}"/>
             <Button x:Name="btnAdd" 
@@ -80,7 +85,7 @@
         <Image Source="/Images/dog_reading.jfif" Grid.Column="1" Grid.Row="1"/>
     </Grid>
 
-    <!-- Define window resources (styles for buttons, listview, textboxes, etc.) -->
+    <!-- Define window resources (styles for buttons, listview, textboxes) -->
     <Window.Resources>
         <!-- Add button -->
         <Style TargetType="Button" x:Key="Add" >
@@ -122,19 +127,21 @@
             <Setter Property="Height" Value="220"/>
             <Setter Property="FontSize" Value="14"/>
         </Style>
-        <!-- TextBox style for Name input -->
+        <!-- TextBox style for Name -->
         <Style TargetType="TextBox" x:Key="txtName">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FAFBF8" />
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
-        <!-- TextBox style for Description input -->
+        <!-- TextBox style for Description -->
         <Style TargetType="TextBox" x:Key="txtDes">
             <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="Height" Value="50"/>
+            <Setter Property="Height" Value="70"/>
             <Setter Property="Margin" Value="30,5" />
             <Setter Property="Padding" Value="5" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="AcceptsReturn" Value="True" />
         </Style>
         <!--All TextBoxes default style -->
         <Style TargetType="TextBox">

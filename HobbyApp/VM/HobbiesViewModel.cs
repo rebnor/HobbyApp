@@ -66,8 +66,8 @@ namespace HobbyApp.VM
          * Name is required before "Add Hobby" button is enabled.
          * If Description is null, a messagebox asks to save without it.
          */
-        public string nameInput;
-        public string NameInput
+        public string? nameInput;
+        public string? NameInput
         {
             get => nameInput;
             set
@@ -77,8 +77,8 @@ namespace HobbyApp.VM
                 AddCommand.RaiseCanExecuteChanged();
             }
         }
-        public string descriptionInput;
-        public string DescriptionInput
+        public string? descriptionInput;
+        public string? DescriptionInput
         {
             get => descriptionInput;
             set
@@ -94,21 +94,19 @@ namespace HobbyApp.VM
             if (DescriptionInput is null)
             {
                 var result = MessageBox.Show(
-                    "You haven't described the Hobby. Would you like to save it without Description?",
-                    "No Description",
+                    $"You haven't described the hobby '{NameInput}'. Would you like to save it without Description?",
+                    "No Description in Hobby",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question);
 
-                if (result == MessageBoxResult.No) return;
+                if (result is MessageBoxResult.No) return;
             }
-            var hobby = new Hobby(){ Name = NameInput, Description = DescriptionInput };
-            var hobbyVm = new HobbyItemViewModel(hobby);
-            Hobbies.Add(hobbyVm);
-            SelectedHobby = hobbyVm;
-            NameInput = null;
-            DescriptionInput = null;
+          
+            Hobbies.Add(new HobbyItemViewModel(new Hobby { Name = NameInput, Description = DescriptionInput }));
+            SelectedHobby = Hobbies.Last();
+            NameInput = DescriptionInput = null;
         }
-        private bool CanAdd(object? parameter) => NameInput is not null;
+        private bool CanAdd(object? parameter) => !string.IsNullOrWhiteSpace(NameInput);
 
         /*
          * Edit a hobby
@@ -161,14 +159,6 @@ namespace HobbyApp.VM
             }
         }
         private bool CanDelete(object? parameter) => SelectedHobby is not null;
-
-        /*
-         * Load hobbies if the collection is empty.
-         */
-        public async Task LoadAsync()
-        {
-            if (Hobbies.Any()) return;
-        }
 
     }
 }
